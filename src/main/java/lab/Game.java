@@ -22,11 +22,6 @@ public class Game {
 	private final double sizeBatY = 100;
 	private double sizeBall = 20;
 	private double actualTime;
-	//private double lastHit; //decl s default inic.
-	//private int batHitCount, wallHitLeft, wallHitRigtht;
-	
-//	private Collisionable[] collisionables;
-	//private DrawableSimulable[] entitiesDrawableSimulables;
 	private DrawAble[] entities;
 
 	private final Goal goal1, goal2;
@@ -42,8 +37,8 @@ public class Game {
 		this.backgrObjects = new BackgroundObjects(this);
 		this.entities = new DrawAble[] {
 				new Ball(this, new Point2D(width/2 - sizeBall/2 ,height/2), new Point2D(6.41,0), sizeBall),
-				new Bat(this, new Point2D(gap, lineWidth), new Point2D(0,4.7), sizeBatX, sizeBatY),
-				new Bat(this, new Point2D(width - (gap + sizeBatX), height - (sizeBatY + lineWidth)), new Point2D(0,-4.5), sizeBatX, sizeBatY),
+				new Bat(this, new Point2D(gap, lineWidth), new Point2D(0,0/*4.7*/), sizeBatX, sizeBatY, "left"),
+				new Bat(this, new Point2D(width - (gap + sizeBatX), height - (sizeBatY + lineWidth)), new Point2D(0,0 /*-4.5*/), sizeBatX, sizeBatY, "right"),
 				new Rectangle(this, new Point2D(0,0), sideLineWidth, this.getHeight(), "leftLine", Color.BLACK), //leftLine 
 				new Rectangle(this, new Point2D(this.getWidth() - sideLineWidth,0), sideLineWidth, this.getHeight(), "rightLine", Color.BLACK),		//rightLine 
 				new Rectangle(this, new Point2D(0, this.getHeight() - lineWidth), this.getWidth(), lineWidth, "upperLine"),//upperLine
@@ -70,14 +65,13 @@ public class Game {
 	}
 	
 	public void simulate(double timeDelta) { //probehne cela kazdy snimek
-	//	actualTime += timeDelta;	
 		
 		for (DrawAble drawAble : entities) {
 			if (drawAble instanceof DrawableSimulable drawAbSimAble) {
 				drawAbSimAble.simulate(timeDelta);
 			}
 				
-			if (drawAble instanceof Ball ball) {  //*if (actualTime - lastHit > 5) {
+			if (drawAble instanceof Ball ball) {  
 				for (DrawAble drawAble2 : entities) {
 					if (drawAble2 instanceof Collisionable ce) {
 						ball.collision(ce);
@@ -94,6 +88,7 @@ public class Game {
 		if (goal2.detection()) {
 			score2.addScore();
 		}
+		//this.control("up", "up");
 			
 	}	
 		
@@ -109,7 +104,31 @@ public class Game {
 	public double getHeight() {
 		return height;
 	}
+	
+	public void moveUp(String side){
+		for(DrawAble drAble : entities) {
+			if (drAble instanceof Bat bat && bat.getSide() == side) {
+				System.out.println("moveUpGame");
+				/*if (bat.getPositionY() < lineWidth) {
+					bat.updatePosition(new Point2D(bat.getPositionX(),bat.getPositionY() + 10));
+				}
+				else {*/
+				bat.control("up");
+				//}
+			}
 
+		}
+	}
+	
+	public void moveDown(String side){
+		for(DrawAble drAble : entities) {
+			if (drAble instanceof Bat bat && bat.getSide() == side) {
+				System.out.println("moveDownGame");
+				bat.control("down");
+			}
+
+		}
+	}
 		
 }
 		

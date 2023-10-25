@@ -3,7 +3,7 @@ package lab;
 
 public class Goal {
 	
-	//Score score1, score2;
+
 	private Ball ball;
 	private Rectangle goalRect;
 	

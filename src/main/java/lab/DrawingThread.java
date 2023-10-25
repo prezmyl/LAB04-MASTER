@@ -17,10 +17,10 @@ public class DrawingThread extends AnimationTimer {
 	
 	private long lasttime = -1;
 
-	public DrawingThread(Canvas canvas) {
+	public DrawingThread(Canvas canvas, Game game) {
 		this.canvas = canvas;
 		this.gc = canvas.getGraphicsContext2D();
-		this.game = new Game(canvas.getWidth(), canvas.getHeight());
+		this.game = game;
 	}
 
 	/**
@@ -32,12 +32,9 @@ public class DrawingThread extends AnimationTimer {
 		double deltaT = (now - lasttime) / 1e9;
 		if (deltaT >= 1./FPS) {
 			gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-			//world.draw(gc);
 			game.draw(gc);
 			if (lasttime > 0) {
 				//time are in nanoseconds and method simulate expects seconds
-				
-				//world.simulate(deltaT);
 				game.simulate(fixedDeltaT);
 			}
 			lasttime = now;

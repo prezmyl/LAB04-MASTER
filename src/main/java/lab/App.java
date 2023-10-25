@@ -1,6 +1,13 @@
 package lab;
 
-import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,29 +25,36 @@ public class App extends Application {
 		launch(args);
 	}
 	
-	private Canvas canvas;
 	
-	private AnimationTimer timer;
+	private GameController controller;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			//Construct a main window with a canvas.  
-			Group root = new Group();
-			canvas = new Canvas(800, 600);
-			root.getChildren().add(canvas);
-			Scene scene = new Scene(root, 800, 600);
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView2.fxml"));
+			BorderPane root = loader.load();
+			
+			Scene scene = new Scene(root);
+			//Canvas gameCanvas = new Canvas();
+			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
+	
 			primaryStage.resizableProperty().set(false);
-			primaryStage.setTitle("Java 1 - 4th laboratory");
+			primaryStage.setTitle("Java 1 - 5th DU-Pong");
 			primaryStage.show();
 			
+			//this.controller = new GameController(canvas);
+			controller = loader.getController();
+			//controller.startGame();
 			//Exit program when main window is closed
 			primaryStage.setOnCloseRequest(this::exitProgram);
-			timer = new DrawingThread(canvas);
-			timer.start();
+	
+		
 			//Draw scene on a separate thread to avoid blocking UI.
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
